@@ -6,5 +6,9 @@ npm
 npm-debug.log
 node_modules/
 
-## NPS API key ##
+## NPS API key & Google Places API Key##
 config.js
+placesConfig.js
+
+## Old topojson files ##
+references/

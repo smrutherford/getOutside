@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import { feature } from 'topojson-client';
 import State from './State';
 
 class Map extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { us: [] };
     this.generateStatePath = this.generateStatePath.bind(this);
   }
@@ -20,18 +21,24 @@ class Map extends React.Component {
       });
   }
 
-
   generateStatePath(geoPath, data) { 
     const states = data.map((feature, i) => {
       const path = geoPath(feature);
-      return <State path={path} key={i} />;
+      return (
+        <State
+          key={feature.id}
+          path={path}
+          stateId={feature.id}
+          updateResults={this.props.updateResults}
+        />
+      );
     });
     return states;
   }
 
   render() {
     return (
-      <svg id="map-container" width={ 1500 } height={ 500 } viewBox="0 0 1000 800">
+      <svg width={1140} height={600} viewBox="0 0 950 600">
         <g id="states-container">
           {this.generateStatePath(d3.geoPath(), this.state.us)}
         </g>
@@ -39,5 +46,9 @@ class Map extends React.Component {
     );
   }
 }
+
+Map.propTypes = {
+  updateResults: PropTypes.func.isRequired,
+};
 
 export default Map;
